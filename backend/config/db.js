@@ -1,7 +1,8 @@
 
 const mongoose = require("mongoose");
 
-const connection = mongoose.connect("mongodb+srv://bhairav:@cluster0.bhairavegntrzq.mongodb.net/skill-tank");
+require("dotenv").config()
+const connection = mongoose.connect(process.env.mongoURL);
 
 
 module.exports={

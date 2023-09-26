@@ -9,13 +9,13 @@ const userRouter = express.Router()
 
 
 userRouter.post("/register",async(req,res)=>{
-      const {name,email,gender,password,age,city} = req.body;
+      const {name,email,gender,password} = req.body;
       try {
-         bcrypt.hash(password,6,async(err,secure_pass)=>{
+         bcrypt.hash(password,5,async(err,secure_pass)=>{
             if(err){
-                console.log(err)
+                console.log(err.message)
             }else{
-                const user = new UserModel({name,email,gender,password:secure_pass,age,city})
+                const user = new UserModel({name,email,gender,password:secure_pass})
                 await user.save()
                 res.send({"msg":"User Registered"})
             }
