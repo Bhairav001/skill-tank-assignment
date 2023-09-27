@@ -29,6 +29,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { useState } from 'react'
+import WithSubnavigation from './WithSubnavigation'
 
 const avatars = [
   {
@@ -106,6 +107,7 @@ export default function Signup() {
   }
   return (
     <Box position={'relative'}>
+        <WithSubnavigation/>
         {isModalOpen && (
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <ModalOverlay />
