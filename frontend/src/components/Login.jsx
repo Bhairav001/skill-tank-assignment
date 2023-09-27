@@ -41,7 +41,7 @@ export default function Login() {
             email,
             password
         }
-        fetch("http://localhost:8080/users/login",{
+        fetch("https://famous-sundress-fawn.cyclic.cloud/users/login",{
             method:"POST",
             body:JSON.stringify(payload),
             headers:{

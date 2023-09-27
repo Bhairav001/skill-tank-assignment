@@ -95,7 +95,7 @@ export default function Signup() {
     }
    console.log(password)
    openModal();
-   fetch("http://localhost:8080/users/register",{
+   fetch("https://famous-sundress-fawn.cyclic.cloud/users/register",{
     method:"POST",
     body:JSON.stringify(payload),
     headers:{
@@ -143,6 +143,7 @@ export default function Signup() {
                      Everything you need to know for your study abrad journey.
                      from first search to your first day on campus.
             </Text>{' '}
+            {/* <Form/> */}
           <Stack direction={'row'} spacing={4} align={'center'}>
             <AvatarGroup>
               {avatars.map((avatar) => (
