@@ -15,7 +15,20 @@ import {
   useBreakpointValue,
   IconProps,
   Icon,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
 } from '@chakra-ui/react'
+import { useState } from 'react'
 
 const avatars = [
   {
@@ -62,8 +75,55 @@ const Blur = (props) => {
 }
 
 export default function Signup() {
+    const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [gender, setGender] = useState("");
+  const [password, setPassword] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isOpen, onToggle } = useDisclosure();
+  // Step 4: Define functions to open and close the modal
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  const handleSubmit =()=>{
+    // console.log("data")
+    const payload={
+        name,
+        email,
+        gender,
+        password
+    }
+   console.log(password)
+   openModal();
+   fetch("http://localhost:8080/users/register",{
+    method:"POST",
+    body:JSON.stringify(payload),
+    headers:{
+        "Content-type":"application/json"
+    }
+   }).then((res)=>res.json())
+   .then(res=>console.log(res))
+   .catch(err=>console.log(err))
+  }
   return (
     <Box position={'relative'}>
+        {isModalOpen && (
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Signup Successfully Done</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              {/* Your success message can go here */}
+              Congratulations! Your signup was successful.
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={closeModal}>
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
       <Container
         as={SimpleGrid}
         maxW={'7xl'}
@@ -74,12 +134,13 @@ export default function Signup() {
           <Heading
             lineHeight={1.1}
             fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}>
-            Senior web designers{' '}
-            <Text as={'span'} bgGradient="linear(to-r, red.400,pink.400)" bgClip="text">
-              &
-            </Text>{' '}
-            Full-Stack Developers
+            Getting you where you{' '}
+            want to Study
           </Heading>
+            <Text fontSize='md' bgGradient="linear(to-r, red.400,pink.400)" bgClip="text" as='b'>
+                     Everything you need to know for your study abrad journey.
+                     from first search to your first day on campus.
+            </Text>{' '}
           <Stack direction={'row'} spacing={4} align={'center'}>
             <AvatarGroup>
               {avatars.map((avatar) => (
@@ -160,7 +221,10 @@ export default function Signup() {
           <Box as={'form'} mt={10}>
             <Stack spacing={4}>
               <Input
-                placeholder="Firstname"
+                placeholder="enter name"
+                type='text'
+                value={name}
+                onChange={(e)=>setName(e.target.value)}
                 bg={'gray.100'}
                 border={0}
                 color={'gray.500'}
@@ -169,7 +233,10 @@ export default function Signup() {
                 }}
               />
               <Input
-                placeholder="firstname@lastname.io"
+                placeholder="enter email"
+                type='email'
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
                 bg={'gray.100'}
                 border={0}
                 color={'gray.500'}
@@ -178,7 +245,21 @@ export default function Signup() {
                 }}
               />
               <Input
-                placeholder="+1 (___) __-___-___"
+                placeholder="enter gender"
+                bg={'gray.100'}
+                value={gender}
+                onChange={(e)=>setGender(e.target.value)}
+                border={0}
+                color={'gray.500'}
+                _placeholder={{
+                  color: 'gray.500',
+                }}
+              />
+               <Input
+                placeholder="enter password"
+                type='password'
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
                 bg={'gray.100'}
                 border={0}
                 color={'gray.500'}
@@ -186,12 +267,10 @@ export default function Signup() {
                   color: 'gray.500',
                 }}
               />
-              <Button fontFamily={'heading'} bg={'gray.200'} color={'gray.800'}>
-                Upload CV
-              </Button>
             </Stack>
             <Button
               fontFamily={'heading'}
+              onClick={handleSubmit}
               mt={8}
               w={'full'}
               bgGradient="linear(to-r, red.400,pink.400)"
